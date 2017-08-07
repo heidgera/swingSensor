@@ -5,66 +5,13 @@
   	<script src="src/libraries/muse/main.js" main="./src/app.js"></script>
     <title>Fluid Power</title>
   	<link rel="stylesheet" href="css/style.css"></link>
-  	<link rel="stylesheet" href="css/animStyles.css"></link>
   	<hard-ware serialport="usb">
-  		<in-put id="coolP" type="analog" pin="0" report="30" low="92" hi="898" result="#coolGraph.newY"></in-put>
-  		<in-put id="coolV" type="analog" pin="1" report="30" hi="980" low="172" result="#coolGraph.newX"></in-put>
-  		<in-put id="warmP" type="analog" pin="2" report="30" low="92" hi="898" result="#warmGraph.newY"></in-put>
-  		<in-put id="warmV" type="analog" pin="3" report="30" hi="125" low="947" result="#warmGraph.newX"></in-put>
-      <in-put id="resetButton" type="digital" debounce="100" pin="2"></in-put>
+  		<in-put id="swing" type="analog" pin="0" report="100"></in-put>
   	</hard-ware>
-    <config-file file="data/config.xml"></config-file>
   </head>
   <body>
-    <smm-focii id="attract" class="card">
-      <img src='img/anim.gif'></img>
-      <div id='attractWords' class='bottom'>
-        <div class="first">Compressed Air could help us store energy from renewable sources, if
-          we can find ways to make compression more efficient.</div>
-          <br /><br />
-        <div class="title">Tap here to begin.</div>
-        <br /><br />
-        <div class="sec">These compressors let you explore one method of increasing efficiency.</div>
-      </div>
-    </smm-focii>
-    <div id="dimScreen"></div>
-  	<!-- <div id="title">
-      <div id="reset" class="button">Start Over</div>
-    </div> -->
-    <div id="useRight">Please use the right compressor for this experiment</div>
-    <div id="useLeft">Please use the left compressor for this experiment</div>
-  	<smm-focii class="graphCont card" id="coolCont">
-  		<div id="coolEff"></div>
-  		<div class="graphTitle">Experiment 2: Heat-Recovery Compressor</div>
-  		<!-- <span class="graphSub">Tap to Explore</span> -->
-  		<!-- <img class="backButton" src="img/back.png"></img> -->
-  		<div class="bar"></div>
-  		<div class="data right">
-  			<canvas class="trace rightNull" main="Pressure vs. Air Volume" id="cool" temp="#coolTemp">
-  				<canvas id="coolGraph" is="muse-graph" class="graph" xMin="0" xMax="14" yMin="0" yMax="200" xDiv="7" yDiv="10" flip="y"></canvas>
-        </canvas>
-        <div class="graphTap right">Tap to Explore</div>
-  			<canvas class="temp leftNull" id="coolTemp" t1="72" p1="15" v1="14" tMin="40" tMax="140" divs="10"></canvas>
-      </div>
-  		<flip-book class="instPanel left" src="data/cool.xml">
-  		</flip-book>
-  	</smm-focii>
-  	<smm-focii class="graphCont card" id="warmCont">
-  		<div id="warmEff"></div>
-  		<div class="graphTitle">Experiment 1: Traditional Compressor</div>
-  		<!-- <span class="graphSub">Tap to Explore</span> -->
-  		<!-- <img class="backButton" src="img/back.png"></img> -->
-  		<div class="bar"></div>
-  		<div class="data left">
-  			<canvas class="trace leftNull"  main="Pressure vs. Air Volume" id="warm" temp="#warmTemp">
-  				<canvas id="warmGraph" is="muse-graph" class="graph" xMin="0" xMax="14" yMin="0" yMax="200" xDiv="7" yDiv="10" flip="y"></canvas>
-        </canvas>
-        <div class="graphTap left">Tap to Explore</div>
-  			<canvas class="temp rightNull" id="warmTemp" t1="72" p1="15" v1="14" tMin="40" tMax="140" divs="10"></canvas>
-      </div>
-  		<flip-book class="instPanel right" src="data/warm.xml">
-  		</flip-book>
-  	</smm-focii>
-
+    <!-- <div id='barback'><div id='bar'></div></div> -->
+    <!-- <div id='grid'></div> -->
+    <canvas width="512" height="256" id='scope'></canvas>
   </body>
 </html>

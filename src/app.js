@@ -1,181 +1,164 @@
-obtain(['µ/hardware.js', './src/pointTrace.js', './src/flipBook.js'], (hw, pt, fb)=> {
+'use strict';
+
+obtain(['µ/midi.js', './src/scope.js'], (midi, scope)=> {
   exports.app = {};
 
-  exports.app.run = ()=> {
-    var focii = fb.focii;
-    var pointTrace = pt.pointTrace;
+  var twelfth = Math.pow(2, 1 / 12);
 
-    var drawTimer;
-    var refreshRate = 30; //fps
+  var audio = new window.AudioContext();
 
-    console.log(µ('#cool'));
+  var analyser = audio.createAnalyser();
+  analyser.fftSize = 2048;
 
-    µ('hard-ware')[0].begin();
+  //create the oscillator, volume control and stereo panning
 
-    var cool = new pointTrace(µ('#cool'));
-    var warm = new pointTrace(µ('#warm'));
+  var real = new Float32Array([0, 1, 0, 0, 0, 0, 0, 0]);
+  var imag = new Float32Array([0, 1, 0, 0, 0, 0, 0, 0]);
 
-    compCont = (elem)=> {
-      var _this = elem;
-      elem.other = null;
-      elem.graph = null;
-      elem.seen = false;
+  var hCont = [0, 0, 0, 0, 0, 0];
 
-      elem.bind = function(other, graf, grapf) {
-        _this.other = other;
-        _this.other.other = _this;
-        _this.other.graph = grapf;
-        _this.graph = graf;
-      };
+  var wave = audio.createPeriodicWave(real, imag);
 
-      return elem;
+  var notes = [];
+
+  var attackTime = .1;
+  var decayTime = 3;
+
+  for (let i = 0; i < 32; i++) {
+    let note = { osc: audio.createOscillator(), gain: audio.createGain() };
+
+    //note.osc.connect(note.gain);
+
+    //notes[i].osc.type = 'custom';
+    note.osc.setPeriodicWave(wave);
+    note.gain.connect(audio.destination);
+    note.osc.start(0);
+    note.gain.gain.value = 0;
+    note.osc.frequency.value = 0;
+    note.attack = (vel)=> {
+      console.log(vel);
+      let now = audio.currentTime;
+      note.gain.gain.cancelScheduledValues(now);
+      note.gain.gain.linearRampToValueAtTime(vel, now + attackTime);
     };
 
-    var coolCont = compCont(µ('#coolCont'));
-    var warmCont = compCont(µ('#warmCont'));
-
-    coolCont.bind(warmCont, cool, warm);
-
-    µ('#cool').refresh();
-    µ('#warm').refresh();
-
-    document.onmousedown = function(e) {
-      e.preventDefault();
-      µ('#attract').refreshTimer();
+    note.decay = (vel)=> {
+      let now = audio.currentTime;
+      note.gain.gain.linearRampToValueAtTime(0, now + decayTime);
     };
 
-    coolCont.losingFocus = (e)=> {
-      coolCont.nextStep();
-      warmCont.deblur();
-    };
+    notes.push(note);
+  }
 
-    warmCont.losingFocus = (e)=> {
-      console.log('warm losing');
-      warmCont.nextStep();
-      coolCont.deblur();
-    };
+  var analyserNote = null;
 
-    var focusFunc = function() {
-      this.seen = true;
-    };
+  let harmonic = function() {
+    var _this = this;
+    _this.connectedNote = null;
+    _this.stopped = false;
+    _this.order = [];
+    for (let j = 0; j < 6; j++) {
+      _this.order[j] = { osc: audio.createOscillator(), gain: audio.createGain() };
+      _this.order[j].osc.connect(_this.order[j].gain);
+      _this.order[j].osc.start(0);
+    }
 
-    coolCont.onmousedown = function(e) {
-      e.preventDefault();
-      if (!coolCont.hasFocus && !focii.locked()) {
-        coolCont.focus(focusFunc);
-        warmCont.blur();
-      }
-    };
-
-    warmCont.onmousedown = function(e) {
-      e.preventDefault();
-      if (!warmCont.hasFocus && !focii.locked()) {
-        coolCont.blur();
-        warmCont.focus(focusFunc);
-      }
-    };
-
-    µ('#attract').refreshTimer = function() {
-      if (µ('#attract').timeout) clearTimeout(µ('#attract').timeout);
-      µ('#attract').timeout = setTimeout(µ('#attract').focus, 120000);
-    };
-
-    µ('#attract').onclick = function(e) {
-      e.preventDefault();
-      µ('#cool').clear();
-      µ('#warm').clear();
-      focii.reset();
-      µ('#attract').refreshTimer();
-    };
-
-    µ('#attract').focus();
-
-    µ('.graph', µ('#warm'))[0].onNewPoint = function() {
-      if (!focii.locked() && µ('#attract').hasFocus) {
-        µ('#attract').loseFocus();
-        µ('#attract').refreshTimer();
+    _this.stop = ()=> {
+      for (let j = 0; j < 6; j++) {
+        _this.order[j].osc.stop(decayTime);
       }
 
-      warm.autoClear(.95);
-      µ('#attract').refreshTimer();
-      if (coolCont.hasFocus && !coolCont.warned) {
-        coolCont.warned = true;
-        µ('#useRight').className = 'dim';
-        µ('#dimScreen').className = 'dim';
-        setTimeout(function() {
-          µ('#useRight').className = '';
-          µ('#dimScreen').className = '';
-        }, 4000);
-
-        setTimeout(function() { coolCont.warned = false; }, 5000);
-      }
+      _this.stopped = true;
+      note.harmonics = null;
     };
 
-    µ('.graph', µ('#cool'))[0].onNewPoint = function() {
-      if (!focii.locked() && µ('#attract').hasFocus) {
-        µ('#attract').loseFocus();
-        µ('#attract').refreshTimer();
+    _this.setHarmonics = (note)=> {
+      if (!note && _this.connectedNote) note = _this.connectedNote;
+      var primary = note.osc.frequency.value;
+      console.log(primary);
+      for (let j = 0; j < 6; j++) {
+        _this.order[j].osc.frequency.setValueAtTime(primary * (j + 1), audio.currentTime);
+        _this.order[j].gain.gain.value = hCont[j];
+        _this.order[j].gain.disconnect();
+        _this.order[j].gain.connect(note.gain);
       }
 
-      cool.autoClear(.95);
-      µ('#attract').refreshTimer();
-      if (warmCont.hasFocus && !warmCont.warned) {
-        warmCont.warned = true;
-        µ('#useLeft').className = 'dim';
-        µ('#dimScreen').className = 'dim';
-        setTimeout(function() {
-          µ('#useLeft').className = '';
-          µ('#dimScreen').className = '';
-        }, 4000);
+      if (analyserNote) analyserNote.gain.disconnect(analyser);
+      analyserNote = note;
+      analyserNote.gain.connect(analyser);
 
-        setTimeout(function() { warmCont.warned = false; }, 5000);
+      _this.connectedNote = note;
+    };
+  };
+
+  //var harm = new harmonic();
+
+  var harmonics = [];
+  for (let i = 0; i < 3; i++) {
+    harmonics[i] = new harmonic();
+  }
+
+  harmonics.index = 0;
+
+  harmonics.set = (note)=> {
+    console.log(harmonics[harmonics.index].connectedNote);
+
+    if (harmonics[harmonics.index].connectedNote !== note) {
+      harmonics.index = (harmonics.index + 1) % harmonics.length;
+      harmonics[harmonics.index].setHarmonics(note);
+    }
+  };
+
+  exports.app.start = ()=> {
+    midi.in.setNoteHandler((note, vel)=> {
+      if (note >= 48 && note < 80) {
+        vel = vel / 256;
+
+        var now = audio.currentTime;
+        notes[note - 48].osc.frequency.value = 523.251 * Math.pow(2.0, (note - 60) / 12);
+
+        //notes[note - 48].harmonics = new harmonic(notes[note - 48]);
+
+        //notes[note - 48].setHarmonics(523.251 * Math.pow(2.0, (note - 60) / 12));
+        if (vel) {
+          notes[note - 48].attack(vel);
+          harmonics.set(notes[note - 48], now);
+        } else {
+          notes[note - 48].decay();//.gain.gain.value = 0;
+          //notes[note - 48].harmonics.stop();
+        }
       }
-    };
+    });
+    midi.in.setControlHandler((note, vel)=> {
+      console.log(note);
+      if (note > 2) {
+        //if (note % 2) real[(note - 1) / 2] = (vel) / 128.0;
+        //else imag[(note - 2) / 2] = (vel) / 128.0;
 
-    µ('#resetButton').onData = function(val) {
-      if (val && !µ('#attract').hasFocus && !focii.locked()) {
-        µ('#attract').focus();
-      }
-    };
+        hCont[note - 3] = vel / 128.0;
 
-    document.onkeydown = function(e) {
-      switch (e.which) {
-        case 'E'.charCodeAt(0):        //if the send button was pressed
-          µ('#coolEff').innerHTML = cool.efficiency();
-          µ('#warmEff').innerHTML = warm.efficiency();
-          break;
-        case 32:
-          cool.clear();
-          warm.clear();
-          warmTemp.clear();
-          break;
-        case 9:
+        //wave = audio.createPeriodicWave(real, imag);
+        for (let i = 0; i < 3; i++) {
+          //notes[i].osc.setPeriodicWave(wave);
+          harmonics[i].setHarmonics();
+        }
+      } else if (note == 1) attackTime = (vel) / 128.0;
+      else if (note == 2) decayTime = 3 * (vel) / 128.0;
+    });
 
-          //console.log(focii);
-          //focii.reset();
-          break;
-        case 13:
-          µ('#attract').focus();
-          break;
-        default:
-          break;
-      }
-    };
+    //notes[16].gain.connect(analyser);
 
-    var draw = function() {
-      //console.log('draw');
-      cool.draw();
-      warm.draw();
-    };
+    var oscScope = new scope.scope(analyser, µ('#scope'));
 
-    window.onresize = function(x, y) {
-      µ('#cool').refresh();
-      µ('#warm').refresh();
-    };
+    function draw() {
+      oscScope.draw();
 
-    setTimeout(window.onresize, 500);
+      requestAnimationFrame(draw);
+    }
 
-    drawTimer = setInterval(draw, 1000 / refreshRate);
+    draw();
+
+    console.log('started');
   };
 
   provide(exports);

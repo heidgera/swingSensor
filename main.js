@@ -20,11 +20,12 @@ function createWindow() {
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    fullscreen:true,
+    //fullscreen:true,
     width:size.width,
     height:size.height,
     frame: false,
-    kiosk: true,
+
+    //kiosk: true,
     scrollBounce: false,
     title: 'Efficient Compression',
   });
@@ -41,7 +42,7 @@ function createWindow() {
   }));
 
   // Open the DevTools.
-  //mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   mainWindow.webContents.session.clearCache(function() {
     //some callback.

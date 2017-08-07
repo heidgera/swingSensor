@@ -1,7 +1,7 @@
 {
-  "name": "FluidPower",
+  "name": "MidiSynth",
   "version": "1.1.0",
-  "description": "Visitor interface for Two Conpressors",
+  "description": "MidiKeyboard interface",
   "main": "main.js",
   "scripts": {
     "start": "electron main.js"
@@ -14,10 +14,9 @@
   "license": "CC0-1.0",
   "homepage": "https://github.com/heidgera/fluidPower#readme",
   "devDependencies": {
-    "electron": "^1.4.5"
+    "electron": "1.4.5"
   },
   "dependencies": {
-    "path": "^0.12.7",
-    "serialport": "^4.0.7"
+    "path": "^0.12.7"
   }
 }
