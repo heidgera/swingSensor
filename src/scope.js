@@ -1,4 +1,4 @@
-obtain(['µ/utils.js'], (utils)=> {
+obtain(['µ/utilities.js'], (utils)=> {
 
   exports.scope = function(analyser, elem) {
 
