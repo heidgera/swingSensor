@@ -3,9 +3,9 @@ obtain(['hx711', 'µ/utilities.js', 'fs'], (HX711, { averager }, fs)=> {
     var _this = this;
     var numCells = 3;
     _this.cells = [];
-    _this.cells[0] = new HX711(0, 1);
-    _this.cells[1] = new HX711(8, 9);
-    _this.cells[2] = new HX711(15, 16);
+    _this.cells[0] = HX711(0, 1);
+    _this.cells[1] = HX711(8, 9);
+    _this.cells[2] = HX711(15, 16);
 
     _this.point = { x: 0, y:0 };
 
