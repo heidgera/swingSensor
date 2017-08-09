@@ -57,33 +57,30 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
     var tracker = 0;
 
     _this.readBase = (cb)=> {
-      console.log('start read');
       var value = 0;
-      var data = [0, 0, 0];
+      var dat = [0, 0, 0];
       var filler = 0x00;
 
       // pulse the clock pin 24 times to read the data
-      data[2] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
-      data[1] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
-      data[0] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
-
-      console.log(data[0]);
+      dat[2] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
+      dat[1] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
+      dat[0] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
 
       // set the channel and the gain factor for the next reading using the clock pin
       for (let i = 0; i < GAIN; i++) {
-        wpi.digitalWrite(clk, HIGH);
-        wpi.digitalWrite(clk, LOW);
+        wpi.digitalWrite(clk, wpi.HIGH);
+        wpi.digitalWrite(clk, wpi.LOW);
       }
 
       // Replicate the most significant bit to pad out a 32-bit signed integer
-      if (data[2] & 0x80) {
+      if (dat[2] & 0x80) {
         filler = 0xFF;
       } else {
         filler = 0x00;
       }
 
       // Construct a 32-bit signed integer
-      value = (filler << 24 | data[2] << 16 | data[1] << 8 | data[0]);
+      value = (filler << 24 | dat[2] << 16 | dat[1] << 8 | dat[0]);
 
       ave.addSample(value);
       _this.average = ave.ave;

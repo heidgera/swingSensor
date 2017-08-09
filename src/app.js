@@ -11,9 +11,9 @@ obtain(obtains, ({ hx711 }, piFig)=> {
 
   cell.begin(500);
 
-  /*setTimeout(()=>{
-
-  })*/
+  setInterval(()=>{
+    cell.average;
+  },500)
 
   /*exports.app.start = ()=> {
     var pollInt = setInterval(()=> {
