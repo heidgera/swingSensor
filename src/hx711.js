@@ -57,6 +57,7 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
     var tracker = 0;
 
     _this.readBase = (cb)=> {
+      console.log('start read');
       var value = 0;
       var data = [0, 0, 0];
       var filler = 0x00;
@@ -65,6 +66,8 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
       data[2] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
       data[1] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
       data[0] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
+
+      console.log(data[0]);
 
       // set the channel and the gain factor for the next reading using the clock pin
       for (let i = 0; i < GAIN; i++) {

@@ -1,13 +1,21 @@
 'use strict';
 
-var obtains = ['./src/swingSensor.js', 'µ/piFig/piFig.js'];
+var obtains = ['./src/hx711.js', 'µ/piFig/piFig.js'];
 
-obtain(obtains, ({ swing }, piFig)=> {
+obtain(obtains, ({ hx711 }, piFig)=> {
   exports.app = {};
 
   console.log('here');
 
-  //exports.app.start = ()=> {
+  var cell = new hx711(0, 1);
+
+  cell.begin(500);
+
+  /*setTimeout(()=>{
+
+  })*/
+
+  /*exports.app.start = ()=> {
     var pollInt = setInterval(()=> {
       console.log(swing.point);
     }, 500);
@@ -16,7 +24,10 @@ obtain(obtains, ({ swing }, piFig)=> {
     document.onkeypress = (e)=> {
       if (e.key == ' ') swing.calibrate();
     };
-  //};
+
+  };*/
+
+  exports.app.start = ()=> {};
 
   provide(exports);
 });
