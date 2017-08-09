@@ -6,7 +6,10 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
 
     var ave = new Averager();
 
-    var Clk = new Gpio(clk, Gpio.OUTPUT);
+    var Clk = new Gpio(clk, {
+      mode: Gpio.OUTPUT,
+      alert: true,
+    });
     var Data = new Gpio(data, {
       mode: Gpio.INPUT,
       pullUpDown: Gpio.PUD_OFF,
@@ -59,7 +62,7 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
       for (var i = 0; i < 8; i++) {
         Clk.digitalWrite(1);
         for (var i = 0; i < 1000; i++) {
-          Math.pow(2, 1/i)
+          Math.pow(2, 1 / i);
         };
 
         val += (Data.digitalRead()) ? 1 : 0;
@@ -70,6 +73,10 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
 
       return val;
     }
+
+    Clk.on('alert', function(level, tick) {
+      console.log('Clk changed to '+ level)
+    });
 
     _this.readBase = (cb)=> {
       var value = 0;
