@@ -52,7 +52,7 @@ obtain(['hx711', 'µ/utilities.js', 'fs'], (HX711, { averager }, fs)=> {
     };
   };
 
-  exports.swing = new threeCells();
+  exports.swing = new HX711(0, 1);//new threeCells();
 
   provide(exports);
 });

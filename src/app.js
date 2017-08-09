@@ -7,11 +7,11 @@ obtain(obtains, ({ swing }, piFig)=> {
 
   exports.app.start = ()=> {
     var pollInt = setInterval(()=> {
-      swing.idle();
+      //swing.idle();
     }, 50);
 
     var pollInt = setInterval(()=> {
-      console.log(swing.point);
+      console.log(swing.getUnits(1));
     }, 500);
     console.log('started');
   };
