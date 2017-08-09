@@ -85,6 +85,8 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
       dat[1] = shiftIn();
       dat[0] = shiftIn();
 
+      console.log('Data: ' + dat[2] + ' ' + dat[1] + ' ' + dat[0]);
+
       // set the channel and the gain factor for the next reading using the clock pin
       for (let i = 0; i < GAIN; i++) {
         Clk.digitalWrite(1);
@@ -100,7 +102,7 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
 
       // Construct a 32-bit signed integer
       value = (filler << 24 | dat[2] << 16 | dat[1] << 8 | dat[0]);
-      console.log(value);
+      console.log(dat[1] << 8 | dat[0]);
 
       ave.addSample(value);
       _this.average = ave.ave;
