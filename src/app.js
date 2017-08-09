@@ -7,7 +7,7 @@ obtain(obtains, ({ hx711 }, piFig)=> {
 
   console.log('here');
 
-  var cell = new hx711(2, 3);
+  var cell = new hx711(0, 1);
 
   cell.begin(500);
 
