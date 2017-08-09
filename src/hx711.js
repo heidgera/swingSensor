@@ -70,7 +70,9 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
       // set the channel and the gain factor for the next reading using the clock pin
       for (let i = 0; i < GAIN; i++) {
         wpi.digitalWrite(clk, wpi.HIGH);
+        wpi.delayMicroseconds(15);
         wpi.digitalWrite(clk, wpi.LOW);
+        wpi.delayMicroseconds(15);
       }
 
       // Replicate the most significant bit to pad out a 32-bit signed integer
