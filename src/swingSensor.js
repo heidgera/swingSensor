@@ -1,4 +1,4 @@
-obtain(['./src/hx711.js', 'µ/utilities.js', 'fs'], ({ hx711: HX711 }, fs)=> {
+obtain(['./src/hx711.js', 'fs'], ({ hx711: HX711 }, fs)=> {
   var threeCells = function() {
     var _this = this;
     var numCells = 3;

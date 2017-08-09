@@ -92,9 +92,9 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
     };
 
     _this.read = (cb)=> {
-      if (_this.isReady()) readBase(cb);
+      if (_this.isReady()) _this.readBase(cb);
       else wpi.wiringPiISR(data, wpi.INT_EDGE_RISING, function(delta) {
-        readBase(cb);
+        _this.readBase(cb);
         wiringPiISRCancel(data);
       });
     };
