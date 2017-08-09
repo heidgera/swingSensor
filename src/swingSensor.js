@@ -4,8 +4,8 @@ obtain(['hx711', 'µ/utilities.js', 'fs'], (HX711, { averager }, fs)=> {
     var numCells = 3;
     _this.cells = [];
     _this.cells[0] = new HX711(0, 1);
-    _this.cells[1] = new HX711(2,3, true);
-    _this.cells[2] = new HX711(4,5, true);
+    _this.cells[1] = new HX711(2, 3, true);
+    _this.cells[2] = new HX711(4, 5, true);
 
     _this.point = { x: 0, y:0 };
 
@@ -25,6 +25,7 @@ obtain(['hx711', 'µ/utilities.js', 'fs'], (HX711, { averager }, fs)=> {
 
     for (var i = 0; i < _this.cells.length; i++) {
       if (calib.scaleFactors[i])  _this.cells[i].setScale(calib.scaleFactors[i]);
+      else _this.cells[i].setScale(8800.);
       initReads[i] = _this.cells[i].read();
       _this.cells[i].tare();
     }
