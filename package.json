@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "path": "^0.12.7",
-    "pigpio": "^0.6.1"
+    "pigpio": "^0.6.1",
+    "wiring-pi": "^2.2.1"
   }
 }

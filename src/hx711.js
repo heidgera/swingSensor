@@ -14,6 +14,7 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
 
     wpi.pinMode(clk, wpi.OUTPUT);
     wpi.pinMode(data, wpi.INPUT);
+    wpi.pullUpDnControl(data, wpi.PUD_DOWN);
 
     _this.average = 0;
 
