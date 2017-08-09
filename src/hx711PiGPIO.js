@@ -115,6 +115,8 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
         wait = false;
         _this.readBase(cb);
       }
+
+      console.log('Saw a change: ' +level);
     });
 
     _this.getValue = ()=> {
