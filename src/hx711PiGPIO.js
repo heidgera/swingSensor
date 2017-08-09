@@ -58,7 +58,9 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
       var val = 0;
       for (var i = 0; i < 8; i++) {
         Clk.digitalWrite(1);
-        for (var i = 0; i < 10000; i++) {};
+        for (var i = 0; i < 1000; i++) {
+          Math.pow(2, 1/i)
+        };
 
         val += (Data.digitalRead()) ? 1 : 0;
         console.log(Data.digitalRead());
