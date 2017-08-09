@@ -15,6 +15,10 @@ obtain(obtains, ({ swing }, piFig)=> {
       console.log(swing.point);
     }, 500);
     console.log('started');
+
+    document.onkeypress = (e)=> {
+      if (e.which == ' ') swing.calibrate();
+    };
   };
 
   provide(exports);

@@ -31,6 +31,7 @@ obtain(['hx711', 'µ/utilities.js', 'fs'], (HX711, { averager }, fs)=> {
     }
 
     _this.calibrate = ()=> {
+      console.log('Calibrating...')
       for (let i = 0; i < _this.cells.length; i++) {
         let newVal = _this.cells[i].read();
         calib.scaleFactors[i] = 3 * (newVal - initReads[i]) / 25;
