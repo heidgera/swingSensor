@@ -64,8 +64,6 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
         val << 1;
         val += (Data.digitalRead()) ? 1 : 0;
 
-        //console.log(Data.digitalRead());
-
         Clk.digitalWrite(0);
       }
 
@@ -102,7 +100,7 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
       }
 
       // Construct a 32-bit signed integer
-      value = (filler << 24 | dat[2] << 16 | dat[1] << 8 | dat[0]);
+      value = (filler << 24 | (dat[2]&7) << 16 | (dat[1]&7) << 8 | (dat[0]&7));
       console.log(dat[1] << 8 | dat[0]);
 
       ave.addSample(value);
