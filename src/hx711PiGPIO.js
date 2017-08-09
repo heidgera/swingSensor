@@ -62,6 +62,7 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
       for (var i = 0; i < 8; i++) {
         Clk.digitalWrite(1);
         val += (Data.digitalRead()) ? 1 : 0;
+
         //console.log(Data.digitalRead());
         val << 1;
         Clk.digitalWrite(0);
@@ -121,8 +122,6 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
         wait = false;
         _this.readBase(cb);
       }
-
-      console.log('Saw a change: ' + level);
     });
 
     _this.getValue = ()=> {
