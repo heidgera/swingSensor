@@ -4,8 +4,8 @@ obtain(['hx711', 'µ/utilities.js', 'fs'], (HX711, { averager }, fs)=> {
     var numCells = 3;
     _this.cells = [];
     _this.cells[0] = new HX711(0, 1);
-    _this.cells[1] = new HX711(8, 9, true);
-    _this.cells[2] = new HX711(15, 16, true);
+    _this.cells[1] = new HX711(2,3, true);
+    _this.cells[2] = new HX711(4,5, true);
 
     _this.point = { x: 0, y:0 };
 
@@ -52,7 +52,7 @@ obtain(['hx711', 'µ/utilities.js', 'fs'], (HX711, { averager }, fs)=> {
     };
   };
 
-  exports.swing = new HX711(0, 1);//new threeCells();
+  exports.swing = new threeCells();
 
   provide(exports);
 });

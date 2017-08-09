@@ -11,6 +11,7 @@ obtain(obtains, ({ swing }, piFig)=> {
     }, 50);
 
     var pollInt = setInterval(()=> {
+      console.log('getting units');
       console.log(swing.getUnits(1));
     }, 500);
     console.log('started');
