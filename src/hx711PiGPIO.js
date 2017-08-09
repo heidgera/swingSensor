@@ -57,7 +57,9 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
     function shiftIn() {
       var val = 0;
       for (var i = 0; i < 8; i++) {
-        Clk.trigger(50, 1);
+        Clk.digitalWrite(1);
+        for (var i = 0; i < 10000; i++) {};
+
         val += (Data.digitalRead()) ? 1 : 0;
         console.log(Data.digitalRead());
         val << 1;
