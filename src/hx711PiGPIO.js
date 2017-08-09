@@ -100,9 +100,11 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
 
       // Construct a 32-bit signed integer
       value = (filler << 24 | dat[2] << 16 | dat[1] << 8 | dat[0]);
+      console.log(value);
 
       ave.addSample(value);
       _this.average = ave.ave;
+      console.log(_this.average);
 
       if (tracker < ave.getBinSize()) tracker++;
       else if (!_this.initValue) _this.initValue = _this.average;
