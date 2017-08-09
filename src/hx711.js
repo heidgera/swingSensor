@@ -69,6 +69,7 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
       // set the channel and the gain factor for the next reading using the clock pin
       for (let i = 0; i < GAIN; i++) {
         wpi.digitalWrite(clk, wpi.HIGH);
+        wpi.delayMicroseconds(10);
         wpi.digitalWrite(clk, wpi.LOW);
       }
 
@@ -95,7 +96,7 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
       if (_this.isReady()) _this.readBase(cb);
       else wpi.wiringPiISR(data, wpi.INT_EDGE_RISING, function(delta) {
         _this.readBase(cb);
-        _this.wiringPiISRCancel(data);
+        wpi.wiringPiISRCancel(data);
       });
     };
 
