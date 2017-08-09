@@ -1,10 +1,4 @@
-obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
-
-  if (!window.wpiSetup) {
-    wpi.setup('wpi');
-    window.wpiSetup = true;
-  }
-
+obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
   exports.hx711 = function(clk, data) {
     var _this = this;
 
@@ -12,8 +6,12 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
 
     var ave = new Averager();
 
-    wpi.pinMode(clk, wpi.OUTPUT);
-    wpi.pinMode(data, wpi.INPUT);
+    var Clk = new Gpio(clk, Gpio.OUTPUT);
+    var Data = new Gpio(data, {
+      mode: Gpio.INPUT,
+      pullUpDown: Gpio.PUD_OFF,
+      edge: Gpio.EITHER_EDGE,
+    });
 
     _this.average = 0;
 
@@ -24,7 +22,7 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
     _this.initValue = 0;
 
     _this.isReady = ()=> {
-      return wpi.digitalRead(data) == wpi.LOW;
+      return Data.digitalRead() == 0;
     };
 
     var readInt = null;
@@ -50,11 +48,23 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
           break;
       }
 
-      wpi.digitalWrite(clk);
+      Clk.digitalWrite(0);
       _this.read();
     };
 
     var tracker = 0;
+
+    function shiftIn() {
+      var val = 0;
+      for (var i = 0; i < 8; i++) {
+        Clk.digitalWrite(1);
+        val += (Data.digitalRead()) ? 1 : 0;
+        val << 1;
+        Clk.digitalWrite(0);
+      }
+
+      return val;
+    }
 
     _this.readBase = (cb)=> {
       var value = 0;
@@ -62,14 +72,16 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
       var filler = 0x00;
 
       // pulse the clock pin 24 times to read the data
-      dat[2] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
-      dat[1] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
-      dat[0] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
+      dat[2] = shiftIn();
+      dat[1] = shiftIn();
+      dat[0] = shiftIn();
+
+      console.log(dat[0]);
 
       // set the channel and the gain factor for the next reading using the clock pin
       for (let i = 0; i < GAIN; i++) {
-        wpi.digitalWrite(clk, wpi.HIGH);
-        wpi.digitalWrite(clk, wpi.LOW);
+        Clk.digitalWrite(1);
+        Clk.digitalWrite(0);
       }
 
       // Replicate the most significant bit to pad out a 32-bit signed integer
@@ -80,7 +92,7 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
       }
 
       // Construct a 32-bit signed integer
-      value = (filler << 24 | dat[2] << 16 | dat[1] << 8 | dat[0]);
+      value = (dat[2] << 16 | dat[1] << 8 | dat[0]);
 
       ave.addSample(value);
       _this.average = ave.ave;
@@ -91,13 +103,19 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
       if (cb) cb(value);
     };
 
+    var wait = false;
+
     _this.read = (cb)=> {
       if (_this.isReady()) _this.readBase(cb);
-      else wpi.wiringPiISR(data, wpi.INT_EDGE_RISING, function(delta) {
-        _this.readBase(cb);
-        wpi.wiringPiISRCancel(data);
-      });
+      else wait = true;
     };
+
+    Data.on('interrupt', (level)=> {
+      if (!level && wait) {
+        wait = false;
+        _this.readBase(cb);
+      }
+    });
 
     _this.getValue = ()=> {
       return _this.average - _this.offset;

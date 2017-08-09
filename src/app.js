@@ -1,6 +1,6 @@
 'use strict';
 
-var obtains = ['./src/hx711.js', 'µ/piFig/piFig.js'];
+var obtains = ['./src/hx711PiGPIO.js', 'µ/piFig/piFig.js'];
 
 obtain(obtains, ({ hx711 }, piFig)=> {
   exports.app = {};
