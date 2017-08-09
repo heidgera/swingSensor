@@ -9,7 +9,7 @@ obtain(obtains, ({ hx711 }, piFig)=> {
 
   var cell = new hx711(17, 18);
 
-  cell.begin(500);
+  cell.begin(50);
 
   setInterval(()=> {
     console.log(cell.average);
