@@ -11,7 +11,7 @@ obtain(['hx711', 'µ/utilities.js', 'fs'], (HX711, { averager }, fs)=> {
 
     var aves = [];
     for (var i = 0; i < numCells; i++) {
-      aves = new averager();
+      aves.push(new averager());
     }
 
     var initReads = [0, 0, 0];
