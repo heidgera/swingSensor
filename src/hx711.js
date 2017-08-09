@@ -67,6 +67,8 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
       dat[1] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
       dat[0] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
 
+      console.log('Data '+ ' ' + dat[2]+ ' ' + dat[1]+ ' ' + dat[0])
+
       // set the channel and the gain factor for the next reading using the clock pin
       for (let i = 0; i < GAIN; i++) {
         wpi.digitalWrite(clk, wpi.HIGH);
