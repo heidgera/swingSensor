@@ -99,7 +99,7 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
       }
 
       // Construct a 32-bit signed integer
-      value = (dat[2] << 16 | dat[1] << 8 | dat[0]);
+      value = (filler << 24 | dat[2] << 16 | dat[1] << 8 | dat[0]);
 
       ave.addSample(value);
       _this.average = ave.ave;
@@ -120,7 +120,7 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
     Data.on('interrupt', (level)=> {
       if (!level && wait) {
         wait = false;
-        _this.readBase(cb);
+        _this.readBase();
       }
     });
 
