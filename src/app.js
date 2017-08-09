@@ -17,7 +17,7 @@ obtain(obtains, ({ swing }, piFig)=> {
     console.log('started');
 
     document.onkeypress = (e)=> {
-      if (e.which == ' ') swing.calibrate();
+      if (e.key == ' ') swing.calibrate();
     };
   };
 
