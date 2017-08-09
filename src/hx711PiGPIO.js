@@ -59,6 +59,7 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
       for (var i = 0; i < 8; i++) {
         Clk.digitalWrite(1);
         val += (Data.digitalRead()) ? 1 : 0;
+        console.log(val);
         val << 1;
         Clk.digitalWrite(0);
       }
@@ -75,8 +76,6 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
       dat[2] = shiftIn();
       dat[1] = shiftIn();
       dat[0] = shiftIn();
-
-      console.log(dat[0]);
 
       // set the channel and the gain factor for the next reading using the clock pin
       for (let i = 0; i < GAIN; i++) {
@@ -116,7 +115,7 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
         _this.readBase(cb);
       }
 
-      console.log('Saw a change: ' +level);
+      console.log('Saw a change: ' + level);
     });
 
     _this.getValue = ()=> {
