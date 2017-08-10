@@ -8,7 +8,7 @@ obtain(['./src/hx711.js', 'fs'], ({ hx711: HX711 }, fs)=> {
     _this.cells.push(new HX711(23, 24));
 
     for (var i = 0; i < _this.cells.length; i++) {
-      _this.cells[i].begin(50);
+      _this.cells[i].begin(75);
     };
 
     var confDir = './sensorCalibrations.json';
