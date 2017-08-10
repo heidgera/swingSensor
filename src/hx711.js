@@ -80,7 +80,7 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
       //dat[2] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
       //dat[1] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
       //dat[0] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
-
+      console.log('read');
       value = shiftIn();
 
       //console.log('Data ' + ' ' + dat[2] + ' ' + dat[1] + ' ' + dat[0]);
