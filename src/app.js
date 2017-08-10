@@ -1,13 +1,13 @@
 'use strict';
 
-var obtains = ['./src/hx711PiGPIO.js', 'µ/piFig/piFig.js'];
+var obtains = ['hx711', 'µ/piFig/piFig.js'];
 
-obtain(obtains, (HX711, piFig)=> {
+obtain(obtains, (hx711, piFig)=> {
   exports.app = {};
 
   console.log('here');
 
-  var cell = new HX711(0, 1);
+  var cell = new hx711(0, 1);
 
   //cell.begin(100);
 
