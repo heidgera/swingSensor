@@ -58,35 +58,45 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
 
     var tracker = 0;
 
+    var shiftIn = ()=> {
+      let dat = 0;
+      for (var i = 24; i--;) {
+        wpi.digitalWrite(clk, wpi.HIGH);
+        wpi.digitalRead(data);
+        dat |= (digitalRead(data) << i);
+
+        wpi.digitalWrite(clk, wpi.LOW);
+      }
+
+      return dat;
+    };
+
     _this.readBase = (cb)=> {
       var value = 0;
       var dat = [0, 0, 0];
       var filler = 0x00;
 
       // pulse the clock pin 24 times to read the data
-      dat[2] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
-      dat[1] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
-      dat[0] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
+      //dat[2] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
+      //dat[1] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
+      //dat[0] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
+
+      value = shiftIn();
 
       //console.log('Data ' + ' ' + dat[2] + ' ' + dat[1] + ' ' + dat[0]);
 
       // set the channel and the gain factor for the next reading using the clock pin
       for (let i = 0; i < GAIN; i++) {
         wpi.digitalWrite(clk, wpi.HIGH);
-        wpi.delayMicroseconds(15);
         wpi.digitalWrite(clk, wpi.LOW);
-        wpi.delayMicroseconds(15);
       }
 
       // Replicate the most significant bit to pad out a 32-bit signed integer
-      if (dat[2] & 0x80) {
-        filler = 0xFF;
-      } else {
-        filler = 0x00;
+      if (value & 0x800000) {
+        value |= ~0xffffff;
       }
 
-      // Construct a 32-bit signed integer
-      value = (filler << 24 | dat[2] << 16 | dat[1] << 8 | dat[0]);
+      console.log(value);
 
       ave.addSample(value);
       _this.average = ave.ave;
@@ -95,6 +105,8 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
       else if (!_this.initValue) _this.initValue = _this.average;
 
       if (cb) cb(value);
+
+      return value;
     };
 
     _this.read = (cb)=> {
