@@ -132,6 +132,7 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
     var wait = false;
 
     _this.read = (cb)=> {
+      Clk.digitalWrite(0);
       if (_this.isReady()) _this.readBase(cb);
       else wait = true, console.log('wait');
     };
