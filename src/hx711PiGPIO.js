@@ -57,21 +57,32 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
 
     var tracker = 0;
 
-    function shiftIn() {
+    /*function shiftIn() {
       let val = 0;
       for (var i = 0; i < 8; i++) {
         Clk.digitalWrite(1);
-        let j = 0;
-        while (j < 10000) j++;
         val << 1;
         val += (Data.digitalRead() ? 1 : 0) * Math.pow(2, i);
-
         Clk.digitalWrite(0);
-        while (j < 10000) j++;
       }
 
       return val;
-    }
+    }*/
+
+    var shiftIn = ()=> {
+      let dat = 0;
+      for (var i = 24; i--;) {
+        Clk.digitalWrite(1);
+        Data.digitalRead();
+        Data.digitalRead();
+        Data.digitalRead();
+        dat |= (Data.digitalRead() << i);
+
+        Clk.digitalWrite(0);
+      }
+
+      return dat;
+    };
 
     Clk.on('alert', function(level, tick) {
       //console.log('Clk changed to ' + level);
@@ -83,11 +94,12 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
       var filler = 0x00;
 
       // pulse the clock pin 24 times to read the data
-      dat[2] = shiftIn();
+      /*dat[2] = shiftIn();
       dat[1] = shiftIn();
-      dat[0] = shiftIn();
+      dat[0] = shiftIn();*/
+      value = shiftIn();
 
-      console.log('Data: ' + dat[2] + ' ' + dat[1] + ' ' + dat[0]);
+      //console.log('Data: ' + dat[2] + ' ' + dat[1] + ' ' + dat[0]);
 
       // set the channel and the gain factor for the next reading using the clock pin
       for (let i = 0; i < GAIN; i++) {
@@ -96,14 +108,18 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
       }
 
       // Replicate the most significant bit to pad out a 32-bit signed integer
-      if (dat[2] & 0x80) {
+      /*if (dat[2] & 0x80) {
         filler = 0xFF;
       } else {
         filler = 0x00;
-      }
+      }*/
 
       // Construct a 32-bit signed integer
-      value = (filler << 24 | dat[2] << 16 | dat[1] << 8 | dat[0]);
+      //value = (filler << 24 | dat[2] << 16 | dat[1] << 8 | dat[0]);
+
+      if (value & 0x800000) {
+        value |= ~0xffffff;
+      }
 
       ave.addSample(value);
       _this.average = ave.ave;
