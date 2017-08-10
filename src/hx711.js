@@ -62,7 +62,7 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
       let dat = 0;
       for (var i = 24; i--;) {
         wpi.digitalWrite(clk, wpi.HIGH);
-        for (var j = 10; j--;) wpi.digitalRead(data);
+        for (var j = 50; j--;) wpi.digitalRead(data);
         dat |= (wpi.digitalRead(data) << i);
 
         wpi.digitalWrite(clk, wpi.LOW);
