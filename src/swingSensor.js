@@ -41,6 +41,7 @@ obtain(['./src/hx711.js', 'fs'], ({ hx711: HX711 }, fs)=> {
     _this.point = {
       get x() {
         var w = _this.weights();
+        console.log(w[0] + ' ' +w[1] + ' ' +w[2])
         return ((-.866 * w[0]) + (0.866 * w[1])) / (w[0] + w[1] + w[2]);
       },
 
