@@ -21,7 +21,7 @@ obtain(obtains, ({ swing }, piFig)=> {
       if (e.key == ' ') swing.calibrate();
     };
 
-  };*/
+  };
 
   //exports.app.start = ()=> {};
 
