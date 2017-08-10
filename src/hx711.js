@@ -15,7 +15,8 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
 
     wpi.pinMode(clk, wpi.OUTPUT);
     wpi.pinMode(data, wpi.INPUT);
-    wpi.pullUpDnControl(data, wpi.PUD_DOWN);
+
+    //wpi.pullUpDnControl(data, wpi.PUD_DOWN);
 
     _this.average = 0;
 
@@ -110,7 +111,7 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
     _this.read = (cb)=> {
       console.log('try read');
       if (_this.isReady()) _this.readBase(cb);
-      else console.log('wait'),wpi.wiringPiISR(data, wpi.INT_EDGE_RISING, function(delta) {
+      else console.log('wait'), wpi.wiringPiISR(data, wpi.INT_EDGE_RISING, function(delta) {
         _this.readBase(cb);
         wpi.wiringPiISRCancel(data);
       });
