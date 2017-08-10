@@ -2,7 +2,6 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
 
   if (!window.wpiSetup) {
     wpi.setup('wpi');
-    wpi.piFaceSetup(200);
     window.wpiSetup = true;
   }
 
@@ -63,8 +62,6 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
       let dat = 0;
       for (var i = 24; i--;) {
         wpi.digitalWrite(clk, wpi.HIGH);
-        wpi.digitalRead(data);
-        wpi.digitalRead(data);
         for (var i = 1000; i--;) wpi.digitalRead(data);
         dat |= (wpi.digitalRead(data) << i);
 
