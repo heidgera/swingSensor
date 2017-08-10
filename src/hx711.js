@@ -33,9 +33,9 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
 
     _this.begin = (readTime = 50)=> {
       readInt = setInterval(_this.read, readTime);
-      setTimeout(()=>{
+      setTimeout(()=> {
         _this.initValue = _this.average;
-      },2000);
+      }, 2000);
     };
 
     _this.halt = ()=> {
