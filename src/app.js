@@ -16,7 +16,7 @@ obtain(obtains, ({ swing }, piFig)=> {
       console.log(swing.point.x + ' | ' + swing.point.y);
       µ('#track').style.left = (µ('#outer').offsetWidth / 2 + µ('#outer').offsetWidth * swing.point.x + 5) + 'px';
       µ('#track').style.top = (µ('#outer').offsetHeight / 2 + µ('#outer').offsetHeight * swing.point.y + 5) + 'px';
-    }, 500);
+    }, 50);
     console.log('started');
 
     document.onkeypress = (e)=> {
