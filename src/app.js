@@ -14,7 +14,7 @@ obtain(obtains, ({ swing }, piFig)=> {
   exports.app.start = ()=> {
     var pollInt = setInterval(()=> {
       swing.point.x;
-    }, 500);
+    }, 1000);
     console.log('started');
 
     document.onkeypress = (e)=> {
