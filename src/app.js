@@ -1,15 +1,15 @@
 'use strict';
 
-var obtains = ['./src/hx711.js', 'µ/piFig/piFig.js'];
+var obtains = ['./src/hx711PiGPIO.js', 'µ/piFig/piFig.js'];
 
 obtain(obtains, ({ hx711 }, piFig)=> {
   exports.app = {};
 
   console.log('here');
 
-  var cell = new hx711(0, 1);
+  var cell = new hx711(17, 18);
 
-  cell.begin(75);
+  cell.begin(500);
 
   setInterval(()=> {
     console.log(cell.average);

@@ -2,6 +2,7 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
 
   if (!window.wpiSetup) {
     wpi.setup('wpi');
+    wpi.piFaceSetup(200);
     window.wpiSetup = true;
   }
 
