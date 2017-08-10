@@ -74,6 +74,8 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
       return dat;
     };
 
+    var prevRead = 0;
+
     _this.readBase = (cb)=> {
       var value = 0;
       var dat = [0, 0, 0];
@@ -95,9 +97,12 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
       }
 
       //console.log(value);
+      if (Math.abs(prevRead - value) < prevRead) {
+        ave.addSample(value);
+        _this.average = ave.ave;
+      }
 
-      ave.addSample(value);
-      _this.average = ave.ave;
+      prevRead = value;
 
       //if (tracker < ave.getBinSize()) tracker++;
       //else if (!_this.initValue) _this.initValue = _this.average;
