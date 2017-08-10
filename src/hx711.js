@@ -65,6 +65,7 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
         wpi.digitalWrite(clk, wpi.HIGH);
         wpi.digitalRead(data);
         wpi.digitalRead(data);
+        for (var i = 1000; i--;) wpi.digitalRead(data);
         dat |= (wpi.digitalRead(data) << i);
 
         wpi.digitalWrite(clk, wpi.LOW);
@@ -111,7 +112,7 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
 
     _this.read = (cb)=> {
       if (_this.isReady()) _this.readBase(cb);
-      else  wpi.wiringPiISR(data, wpi.INT_EDGE_RISING, function(delta) {
+      else wpi.wiringPiISR(data, wpi.INT_EDGE_RISING, function(delta) {
         _this.readBase(cb);
         wpi.wiringPiISRCancel(data);
       });
