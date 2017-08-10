@@ -1,21 +1,21 @@
-obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
+obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
 
-  if (!window.rpioSetup) {
-    rpio.init({ mapping: 'gpio' });
-    window.rpioSetup = true;
+  if (!window.wpiSetup) {
+    wpi.setup('wpi');
+    window.wpiSetup = true;
   }
 
-  exports.hx711 = function(clkPin, dataPin) {
+  exports.hx711 = function(clk, data) {
     var _this = this;
 
     var GAIN = 128;
 
     var ave = new Averager();
 
-    rpio.open(clkPin, rpio.OUTPUT, rpio.LOW);
-    rpio.open(dataPin, rpio.INPUT);
+    wpi.pinMode(clk, wpi.OUTPUT);
+    wpi.pinMode(data, wpi.INPUT);
 
-    //rpio.pullUpDnControl(data, rpio.PUD_DOWN);
+    //wpi.pullUpDnControl(data, wpi.PUD_DOWN);
 
     _this.average = 0;
 
@@ -26,7 +26,7 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
     _this.initValue = 0;
 
     _this.isReady = ()=> {
-      return rpio.read(dataPin) == rpio.LOW;
+      return wpi.digitalRead(data) == wpi.LOW;
     };
 
     var readInt = null;
@@ -52,7 +52,7 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
           break;
       }
 
-      rpio.write(clkPin, rpio.LOW);
+      wpi.digitalWrite(clk);
       _this.read();
     };
 
@@ -61,11 +61,11 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
     var shiftIn = ()=> {
       let dat = 0;
       for (var i = 24; i--;) {
-        rpio.write(clkPin, rpio.HIGH);
-        for (var j = 50; j--;) rpio.read(dataPin);
-        dat |= (rpio.read(dataPin) << i);
+        wpi.digitalWrite(clk, wpi.HIGH);
+        for (var j = 50; j--;) wpi.digitalRead(data);
+        dat |= (wpi.digitalRead(data) << i);
 
-        rpio.write(clkPin, rpio.LOW);
+        wpi.digitalWrite(clk, wpi.LOW);
       }
 
       return dat;
@@ -76,6 +76,10 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
       var dat = [0, 0, 0];
       var filler = 0x00;
 
+      // pulse the clock pin 24 times to read the data
+      //dat[2] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
+      //dat[1] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
+      //dat[0] = wpi.shiftIn(data, clk, wpi.MSBFIRST);
       console.log('read');
       value = shiftIn();
 
@@ -83,8 +87,8 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
 
       // set the channel and the gain factor for the next reading using the clock pin
       for (let i = 0; i < GAIN; i++) {
-        rpio.write(clkPin, rpio.HIGH);
-        rpio.write(clkPin, rpio.LOW);
+        wpi.digitalWrite(clk, wpi.HIGH);
+        wpi.digitalWrite(clk, wpi.LOW);
       }
 
       // Replicate the most significant bit to pad out a 32-bit signed integer
@@ -103,19 +107,13 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
       if (cb) cb(value);
     };
 
-    var wait = false;
-
     _this.read = (cb)=> {
       if (_this.isReady()) _this.readBase(cb);
-      else wait = true;
+      else wpi.wiringPiISR(data, wpi.INT_EDGE_RISING, function(delta) {
+        _this.readBase(cb);
+        wpi.wiringPiISRCancel(data);
+      });
     };
-
-    rpio.poll(dataPin, ()=> {
-      if (wait) {
-        _this.readBase();
-        wait = false;
-      }
-    });
 
     _this.getValue = ()=> {
       return _this.average - _this.offset;

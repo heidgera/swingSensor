@@ -1,11 +1,11 @@
-obtain(['./src/hx711PiGPIO.js', 'fs'], ({ hx711: HX711 }, fs)=> {
+obtain(['./src/hx711rpio.js', 'fs'], ({ hx711: HX711 }, fs)=> {
   var threeCells = function() {
     var _this = this;
     var numCells = 3;
     _this.cells = [];
-    _this.cells.push(new HX711(0, 1));
-    _this.cells.push(new HX711(2, 3));
-    _this.cells.push(new HX711(4, 5));
+    _this.cells.push(new HX711(17, 18));
+    _this.cells.push(new HX711(27, 22));
+    _this.cells.push(new HX711(23, 24));
 
     for (var i = 0; i < _this.cells.length; i++) {
       _this.cells[i].begin(50);
@@ -29,9 +29,9 @@ obtain(['./src/hx711PiGPIO.js', 'fs'], ({ hx711: HX711 }, fs)=> {
     _this.calibrate = ()=> {
       console.log('Calibrating...');
       for (let i = 0; i < _this.cells.length; i++) {
-        let newVal = _this.cells[i].read();
+        let newVal = _this.cells[i].average;
         calib.scaleFactors[i] = 3 * (newVal - initReads[i]) / 25;
-        _this.cells[i].setScale(calib.scaleFactors[i]);
+        _this.cells[i].scale = calib.scaleFactors[i];
         fs.writeFileSync(confDir, JSON.stringify(calib));
       }
     };

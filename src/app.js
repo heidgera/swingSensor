@@ -1,18 +1,14 @@
 'use strict';
 
-var obtains = ['./src/hx711rpio.js', 'µ/piFig/piFig.js'];
+var obtains = ['./src/swingSensor.js', 'µ/piFig/piFig.js'];
 
-obtain(obtains, ({ hx711:HX711 }, piFig)=> {
+obtain(obtains, ({ swing }, piFig)=> {
   exports.app = {};
 
   console.log('here');
 
-  var cell = new HX711(17, 18);
-
-  cell.begin(100);
-
   setInterval(()=> {
-    console.log(cell.average);
+    console.log(swing.point.x + ' | ' + swing.point.y);
   }, 500);
 
   /*exports.app.start = ()=> {
