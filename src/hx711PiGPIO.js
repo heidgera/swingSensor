@@ -73,9 +73,7 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
       let dat = 0;
       for (var i = 24; i--;) {
         Clk.digitalWrite(1);
-        Data.digitalRead();
-        Data.digitalRead();
-        Data.digitalRead();
+        for (var i = 1000; i--;) Data.digitalRead();
         dat |= (Data.digitalRead() << i);
 
         Clk.digitalWrite(0);
