@@ -2,17 +2,17 @@
 
 var obtains = ['./src/hx711PiGPIO.js', 'µ/piFig/piFig.js'];
 
-obtain(obtains, ({ hx711:HX711 }, piFig)=> {
+obtain(obtains, (HX711, piFig)=> {
   exports.app = {};
 
   console.log('here');
 
-  var cell = new HX711(17, 18);
+  var cell = new HX711(0, 1);
 
-  cell.begin(100);
+  //cell.begin(100);
 
   setInterval(()=> {
-    //console.log(cell.average);
+    console.log(cell.read());
   }, 500);
 
   /*exports.app.start = ()=> {
