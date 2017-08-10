@@ -1,4 +1,4 @@
-obtain(['./src/hx711rpio.js', 'fs'], ({ hx711: HX711 }, fs)=> {
+obtain(['./src/hx711.js', 'fs'], ({ hx711: HX711 }, fs)=> {
   var threeCells = function() {
     var _this = this;
     var numCells = 3;
@@ -30,24 +30,12 @@ obtain(['./src/hx711rpio.js', 'fs'], ({ hx711: HX711 }, fs)=> {
       console.log('Calibrating...');
       for (let i = 0; i < _this.cells.length; i++) {
         let newVal = _this.cells[i].average;
-        calib.scaleFactors[i] = 3 * (newVal - initReads[i]) / 25;
+        calib.scaleFactors[i] = 3 * (newVal - _this.cells[i].initValue) / 25;
         _this.cells[i].scale = calib.scaleFactors[i];
         fs.writeFileSync(confDir, JSON.stringify(calib));
       }
     };
 
-    //_this.onNewPoint = ()=> {};
-
-    /*_this.idle = ()=> {
-      let tot = 0;
-      for (let i = 0; i < _this.cells.length; i++) {
-        aves[i].addSample(_this.cells[i].getUnits(1));
-        tot += aves[i].ave;
-      }
-
-      _this.point.x = ((-.866 * aves[0].ave) + (0.866 * aves[1].ave) + (0 * aves[2].ave)) / tot;
-      _this.point.y = ((.5 * aves[0].ave) + (.5 * aves[1].ave) + (-1 * aves[2].ave)) / tot;
-    };*/
     _this.weights = ()=> _this.cells.map((cell)=>cell.getUnits());
 
     _this.point = {
