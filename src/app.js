@@ -7,13 +7,13 @@ obtain(obtains, ({ swing }, piFig)=> {
 
   console.log('here');
 
-  setInterval(()=> {
+  /*setInterval(()=> {
     console.log(swing.point.x + ' | ' + swing.point.y);
-  }, 500);
+  }, 500);*/
 
-  /*exports.app.start = ()=> {
+  exports.app.start = ()=> {
     var pollInt = setInterval(()=> {
-      console.log(swing.point);
+      console.log(swing.point.x + ' | ' + swing.point.y);
     }, 500);
     console.log('started');
 
@@ -23,7 +23,7 @@ obtain(obtains, ({ swing }, piFig)=> {
 
   };*/
 
-  exports.app.start = ()=> {};
+  //exports.app.start = ()=> {};
 
   provide(exports);
 });
