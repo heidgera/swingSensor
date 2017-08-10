@@ -63,7 +63,7 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
       for (var i = 24; i--;) {
         wpi.digitalWrite(clk, wpi.HIGH);
         wpi.digitalRead(data);
-        dat |= (digitalRead(data) << i);
+        dat |= (wpi.digitalRead(data) << i);
 
         wpi.digitalWrite(clk, wpi.LOW);
       }
@@ -105,8 +105,6 @@ obtain(['wiring-pi', 'µ/utilities.js'], (wpi, { averager: Averager })=> {
       else if (!_this.initValue) _this.initValue = _this.average;
 
       if (cb) cb(value);
-
-      return value;
     };
 
     _this.read = (cb)=> {
