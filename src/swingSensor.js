@@ -20,7 +20,7 @@ obtain(['./src/hx711.js', 'fs'], ({ hx711: HX711 }, fs)=> {
 
     setTimeout(()=> {
       for (var i = 0; i < _this.cells.length; i++) {
-        if (calib.scaleFactors[i]){
+        if (calib.scaleFactors[i]) {
           console.log('recalled scale factor of ' + calib.scaleFactors[i]);
           _this.cells[i].scale = calib.scaleFactors[i];
         } else _this.cells[i].scale = 8800.;
@@ -33,6 +33,7 @@ obtain(['./src/hx711.js', 'fs'], ({ hx711: HX711 }, fs)=> {
       for (let i = 0; i < _this.cells.length; i++) {
         let newVal = _this.cells[i].average;
         calib.scaleFactors[i] = 3 * (newVal - _this.cells[i].initValue) / 25;
+        console.log('New scale is ' + calib.scaleFactors[i]);
         _this.cells[i].scale = calib.scaleFactors[i];
         fs.writeFileSync(confDir, JSON.stringify(calib));
       }
