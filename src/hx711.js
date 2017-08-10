@@ -33,6 +33,9 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
 
     _this.begin = (readTime = 50)=> {
       readInt = setInterval(_this.read, readTime);
+      setTimeout(()=>{
+        _this.initValue = _this.average;
+      },2000);
     };
 
     _this.halt = ()=> {
@@ -62,7 +65,7 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
       let dat = 0;
       for (var i = 24; i--;) {
         rpio.write(clkPin, rpio.HIGH);
-        dat |= ((rpio.read(dataPin)?1:0) << i);
+        dat |= ((rpio.read(dataPin) ? 1 : 0) << i);
 
         rpio.write(clkPin, rpio.LOW);
       }
@@ -95,8 +98,8 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
       ave.addSample(value);
       _this.average = ave.ave;
 
-      if (tracker < ave.getBinSize()) tracker++;
-      else if (!_this.initValue) _this.initValue = _this.average;
+      //if (tracker < ave.getBinSize()) tracker++;
+      //else if (!_this.initValue) _this.initValue = _this.average;
 
       if (cb) cb(value);
     };
