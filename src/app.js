@@ -13,8 +13,8 @@ obtain(obtains, ({ swing }, piFig)=> {
 
   exports.app.start = ()=> {
     var pollInt = setInterval(()=> {
-      console.log(swing.point.x + ' | ' + swing.point.y);
-    }, 500);
+      //console.log(swing.point.x + ' | ' + swing.point.y);
+    }, 50);
     console.log('started');
 
     document.onkeypress = (e)=> {
