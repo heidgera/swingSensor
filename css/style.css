@@ -30,11 +30,13 @@ body {
   width:90vmin;
   height: 90vmin;
   background-color: #fff;
+  border-radius: 45vmin;
 }
 
 #track {
   position: absolute;
   width:10px;
   height: 10px;
+  border-radius: 5px;
   background-color: #f00;
 }
