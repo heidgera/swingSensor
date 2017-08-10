@@ -62,8 +62,7 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
       let dat = 0;
       for (var i = 24; i--;) {
         rpio.write(clkPin, rpio.HIGH);
-        for (var j = 50; j--;) rpio.read(dataPin);
-        dat |= (rpio.read(dataPin) << i);
+        dat |= ((rpio.read(dataPin)?1:0) << i);
 
         rpio.write(clkPin, rpio.LOW);
       }
@@ -76,7 +75,6 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
       var dat = [0, 0, 0];
       var filler = 0x00;
 
-      console.log('read');
       value = shiftIn();
 
       //console.log('Data ' + ' ' + dat[2] + ' ' + dat[1] + ' ' + dat[0]);
@@ -92,7 +90,7 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
         value |= ~0xffffff;
       }
 
-      console.log(value);
+      //console.log(value);
 
       ave.addSample(value);
       _this.average = ave.ave;
@@ -111,7 +109,7 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
     };
 
     rpio.poll(dataPin, ()=> {
-      if (wait) {
+      if (wait && rpio.read(dataPin) == rpio.LOW) {
         _this.readBase();
         wait = false;
       }
