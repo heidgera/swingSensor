@@ -133,7 +133,7 @@ obtain(['pigpio', 'µ/utilities.js'], ({ Gpio }, { averager: Averager })=> {
 
     _this.read = (cb)=> {
       if (_this.isReady()) _this.readBase(cb);
-      else wait = true;
+      else wait = true, console.log('wait');
     };
 
     Data.on('interrupt', (level)=> {
