@@ -1,8 +1,8 @@
 'use strict';
 
-var obtains = ['./src/swingSensor.js', 'µ/piFig/piFig.js'];
+var obtains = ['./src/swingSensor.js'];
 
-obtain(obtains, ({ swing }, piFig)=> {
+obtain(obtains, ({ swing })=> {
   exports.app = {};
 
   console.log('here');
