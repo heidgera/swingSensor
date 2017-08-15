@@ -8,7 +8,7 @@ obtain(obtains, ({ swing }, { clamp })=> {
   var setupAudioControl = (cfg)=> {
     if (cfg) {
       var tracks = cfg.tracks.map(el=> new Audio(el));
-      tracks.forEach((el)=>{el.play()});
+      tracks.forEach((el)=> {el.play();});
       var pollInt = setInterval(()=> {
         cfg.ctrlFunc(swing.point.x, swing.point.y, tracks);
         µ('#track').style.left = (µ('#outer').offsetWidth / 2 + µ('#outer').offsetWidth * swing.point.x + 5) + 'px';
@@ -32,6 +32,7 @@ obtain(obtains, ({ swing }, { clamp })=> {
         ctrlFunc: (x, y, audio)=> {
           let dist = clamp(Math.sqrt(x * x + y * y), 0, 1);
           audio[0].volume = Math.pow(1 - dist, 1);
+          console.log(audio[0].volume);
         },
       });
     });
