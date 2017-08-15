@@ -43,6 +43,8 @@ obtain(['./src/hx711.js', 'fs'], ({ hx711: HX711 }, fs)=> {
 
     _this.weights = ()=> _this.cells.map((cell)=>cell.getUnits());
 
+    _this.totalWeight = ()=>_this.weights.reduce((acc, cur)=>acc + cur, 0);
+
     _this.point = {
       get x() {
         var w = _this.weights();
