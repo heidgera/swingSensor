@@ -1,6 +1,7 @@
 'use strict';
 const electron = require('electron');
 
+
 // Module to control application life.
 const app = electron.app;
 app.commandLine.appendSwitch('--enable-viewport-meta', 'true');
@@ -10,6 +11,8 @@ const BrowserWindow = electron.BrowserWindow;
 
 const path = require('path');
 const url = require('url');
+
+global.appRoot = path.resolve(__dirname);
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -27,7 +30,7 @@ function createWindow() {
 
     //kiosk: true,
     scrollBounce: false,
-    title: 'Efficient Compression',
+    title: 'TemplateProject',
   });
 
   mainWindow.maximize();
@@ -36,7 +39,7 @@ function createWindow() {
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
+    pathname: path.join(__dirname, 'local/index.html'),
     protocol: 'file:',
     slashes: true,
   }));
