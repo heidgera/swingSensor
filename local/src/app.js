@@ -2,14 +2,8 @@
 
 var obtains = ['./src/swingSensor.js', 'electron'];
 
-obtain(obtains, ({ swing }, { app })=> {
+obtain(obtains, ({ swing })=> {
   exports.app = {};
-
-  console.log('here');
-
-  /*setInterval(()=> {
-    //console.log(swing.point.x + ' | ' + swing.point.y);
-  }, 500);*/
 
   exports.app.start = ()=> {
     var pollInt = setInterval(()=> {
@@ -24,7 +18,8 @@ obtain(obtains, ({ swing }, { app })=> {
     };
 
     document.onkeyup = (e)=> {
-      if (e.which == 27) app.quit();
+      var electron = require('electron');
+      if (e.which == 27) electron.app.quit();
     };
 
   };
