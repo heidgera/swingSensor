@@ -19,17 +19,34 @@ body {
   background-color: #2a2a2a;
 }
 
-#outer {
-  position: absolute;
+.targ {
+	position: absolute;
   top:0;
   bottom: 0;
   left: 0;
   right: 0;
   margin: auto;
+}
+
+#outer {
   width:90vmin;
   height: 90vmin;
   background-color: #fff;
   border-radius: 45vmin;
+}
+
+#inner1 {
+  width:60vmin;
+  height: 60vmin;
+  background-color: #000;
+  border-radius: 30vmin;
+}
+
+#inner2 {
+  width:30vmin;
+  height: 30vmin;
+  background-color: #fff;
+  border-radius: 15vmin;
 }
 
 #track {
