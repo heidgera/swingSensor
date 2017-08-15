@@ -1,8 +1,8 @@
 'use strict';
 
-var obtains = ['./src/swingSensor.js'];
+var obtains = ['./src/swingSensor.js', 'electron'];
 
-obtain(obtains, ({ swing })=> {
+obtain(obtains, ({ swing }, { app })=> {
   exports.app = {};
 
   console.log('here');
@@ -21,6 +21,10 @@ obtain(obtains, ({ swing })=> {
 
     document.onkeypress = (e)=> {
       if (e.key == ' ') swing.calibrate();
+    };
+
+    document.onkeyup = (e)=> {
+      if (e.which == 27) app.quit();
     };
 
   };
