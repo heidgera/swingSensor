@@ -19,7 +19,7 @@ obtain(obtains, ({ swing })=> {
 
     document.onkeyup = (e)=> {
       var electron = require('electron');
-      if (e.which == 27) electron.app.quit();
+      if (e.which == 27) electron.remote.process.exit();
     };
 
   };
