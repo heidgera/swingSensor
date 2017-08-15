@@ -8,10 +8,10 @@ exports.config = {
     autostart: true,
     /*smoothShutdown: {
       delayTime: 1000,
-    },
+    },*/
     wifi: {
       ssid: 'SensorServer',
       password: 'defaultPass',
-    },*/
+    },
   },
 };
