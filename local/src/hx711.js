@@ -10,7 +10,7 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
 
     var GAIN = 128;
 
-    var ave = new Averager();
+    var ave = new Averager(2);
 
     rpio.open(clkPin, rpio.OUTPUT, rpio.LOW);
     rpio.open(dataPin, rpio.INPUT);
