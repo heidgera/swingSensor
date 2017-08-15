@@ -31,8 +31,7 @@ obtain(obtains, ({ swing }, { clamp })=> {
         tracks: ['./audio/chimes.mp3'],
         ctrlFunc: (x, y, audio)=> {
           let dist = clamp(Math.sqrt(x * x + y * y), 0, 1);
-          audio[0].volume = Math.pow(1 - dist, 1);
-          console.log(audio[0].volume);
+          audio[0].volume = Math.pow(1 - dist, 2);
         },
       });
     });
