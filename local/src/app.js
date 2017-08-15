@@ -7,9 +7,9 @@ obtain(obtains, ({ swing })=> {
 
   console.log('here');
 
-  /*setInterval(()=> {
+  setInterval(()=> {
     console.log(swing.point.x + ' | ' + swing.point.y);
-  }, 500);*/
+  }, 500);
 
   exports.app.start = ()=> {
     var pollInt = setInterval(()=> {
