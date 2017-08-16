@@ -10,11 +10,11 @@
     el.pause();
     el.distCompare = (x, y, pt)=>{
       let dist = Math.sqrt(Math.pow(x - pt.x, 2) + Math.pow(y - pt.y, 2));
-      if(dist < .25 && !el.struck){
+      if(dist < .15 && !el.struck){
         el.struck = true;
         el.currentTime = 0;
         el.play();
-      } else if( dist > .375){
+      } else if( dist > .25){
         el.struck = false;
       }
     }
@@ -22,7 +22,7 @@
   ctrlFunc: (x, y, audio)=> {
     var chimeSpace = (2 * Math.PI) / audio.length;
     for (var i = 0; i < audio.length; i++) {
-      audio[i].distCompare(x,y,{x: Math.cos(chimeSpace * i)/4, y: Math.sin(chimeSpace * i)/4})
+      audio[i].distCompare(x,y,{x: Math.cos(chimeSpace * i)/3, y: Math.sin(chimeSpace * i)/3})
     }
   },
 }
