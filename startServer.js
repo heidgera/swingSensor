@@ -19,5 +19,5 @@ global.obtain = (addr, func)=> {
 
 //require('./common/src/muse/SerialElectron.js');
 obtain(['./local/src/server/express.js'], ({ fileServer })=> {
-  
+
 });
