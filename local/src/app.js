@@ -18,7 +18,7 @@ obtain(obtains, ({ swing }, { clamp })=> {
   };
 
   exports.app.start = ()=> {
-    var req = get('172.17.68.120/controlConfig.js').then((res)=> {
+    var req = get('http://172.17.68.120/controlConfig.js').then((res)=> {
       setupAudioControl(eval('()=>{ return\n' + res.responseText + '}')());
     }, (error)=> {
       setupAudioControl({
