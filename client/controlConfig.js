@@ -22,7 +22,7 @@
   ctrlFunc: (x, y, audio)=> {
     var chimeSpace = (2 * Math.PI) / audio.length;
     for (var i = 0; i < audio.length; i++) {
-      audio[i].distCompare(x,y,{x: Math.cos(chimeSpace * i)/2, y: Math.sin(chimeSpace * i)/2})
+      audio[i].distCompare(x,y,{x: Math.cos(chimeSpace * i)/4, y: Math.sin(chimeSpace * i)/4})
     }
   },
 }
