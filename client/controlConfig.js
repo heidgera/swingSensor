@@ -9,6 +9,7 @@
     el.loop = false;
     el.pause();
     el.distCompare = (x, y, pt)=>{
+      console.log(pt);
       let dist = Math.sqrt(Math.pow(x - pt.x, 2) + Math.pow(y - pt.y, 2));
       if(dist < .25 && !el.struck){
         el.struck = true;
