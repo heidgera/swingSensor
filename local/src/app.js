@@ -8,10 +8,7 @@ obtain(obtains, ({ swing }, { clamp })=> {
   var setupAudioControl = (cfg)=> {
     if (cfg) {
       var tracks = cfg.tracks.map(el=> new Audio(el));
-      tracks.forEach((el)=> {
-        el.loop = true;
-        el.play();
-      });
+      tracks.forEach(cfg.setupFunc);
       var pollInt = setInterval(()=> {
         cfg.ctrlFunc(swing.point.x, swing.point.y, tracks);
         µ('#track').style.left = (µ('#outer').offsetWidth / 2 + µ('#outer').offsetWidth * swing.point.x + 5) + 'px';
@@ -21,17 +18,16 @@ obtain(obtains, ({ swing }, { clamp })=> {
   };
 
   exports.app.start = ()=> {
-    /*var pollInt = setInterval(()=> {
-      //console.log(swing.point.x + ' | ' + swing.point.y);
-      µ('#track').style.left = (µ('#outer').offsetWidth / 2 + µ('#outer').offsetWidth * swing.point.x + 5) + 'px';
-      µ('#track').style.top = (µ('#outer').offsetHeight / 2 - µ('#outer').offsetHeight * swing.point.y + 5) + 'px';
-    }, 50);*/
-
-    var req = get('tulsa-swing-controller.net', { type: 'application/json' }).then((res)=> {
-      setupAudioControl(JSON.parse(res.responseText));
+    var req = get('172.17.68.120/controlConfig.js').then((res)=> {
+      setupAudioControl(eval('()=>{ return\n' + res.responseText + '}')());
     }, (error)=> {
       setupAudioControl({
         tracks: ['./audio/chimes.mp3'],
+        setupFunc: (el, ind, arr)=> {
+          el.loop = true;
+          el.play();
+        },
+
         ctrlFunc: (x, y, audio)=> {
           let dist = clamp(Math.sqrt(x * x + y * y) * 2, 0, 1);
           audio[0].volume = Math.pow(1 - dist, 2);

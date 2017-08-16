@@ -10,7 +10,7 @@ obtain(['express', 'fs'], (express, fs)=> {
 
   exports.fileServer = fileServer;
 
-  var WebSocketServer = require('ws').Server;
+  /*var WebSocketServer = require('ws').Server;
   var wss = new WebSocketServer({ port: 8080 });
   var webSock = null;
 
@@ -18,5 +18,5 @@ obtain(['express', 'fs'], (express, fs)=> {
     wss.clients.forEach(function each(client) {
       client.send(data);
     });
-  };
+  };*/
 });
