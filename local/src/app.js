@@ -34,7 +34,7 @@ obtain(obtains, ({ swing }, { clamp })=> {
           let dist = clamp(Math.sqrt(x * x + y * y) * 2, 0, 1);
           audio[0].volume = Math.pow(1 - dist, 2);
         },
-        pollTime: 100;
+        pollTime: 100,
       });
     });
 
