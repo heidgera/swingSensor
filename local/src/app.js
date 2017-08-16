@@ -18,9 +18,8 @@ obtain(obtains, ({ swing }, { clamp })=> {
   };
 
   exports.app.start = ()=> {
-    var req = get('http://192.168.0.1/controlConfig.js', { type: 'text' }).then((res)=> {
-      console.log('//# sourceURL=remoteInstructions\n ()=>{ \nreturn' + res.responseText + '}');
-      var ctrlCfg = eval('//# sourceURL=remoteInstructions\n ()=>{ \nreturn' + res.responseText + '}')();
+    var req = get('http://tulsa-swing-sensor.net/controlConfig.js', { type: 'text' }).then((res)=> {
+      var ctrlCfg = eval('//# sourceURL=remoteInstructions\n ()=>{ \nreturn ' + res.responseText + '}')();
       console.log(ctrlCfg);
       setupAudioControl(ctrlCfg);
     }, (error)=> {

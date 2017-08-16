@@ -1,5 +1,5 @@
 {
-  tracks: ['http://192.168.0.1/audio/chimes.mp3'],
+  tracks: ['http://tulsa-swing-sensor.net/audio/chimes.mp3'],
   setupFunc: (el, ind, arr)=> {
     el.loop = true;
     el.play();
