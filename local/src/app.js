@@ -13,7 +13,7 @@ obtain(obtains, ({ swing }, { clamp })=> {
         cfg.ctrlFunc(swing.point.x, swing.point.y, tracks);
         µ('#track').style.left = (µ('#outer').offsetWidth / 2 + µ('#outer').offsetWidth * swing.point.x + 5) + 'px';
         µ('#track').style.top = (µ('#outer').offsetHeight / 2 - µ('#outer').offsetHeight * swing.point.y + 5) + 'px';
-      }, 100);
+      }, (cfg.pollTime || 100) );
     }
   };
 
@@ -34,6 +34,7 @@ obtain(obtains, ({ swing }, { clamp })=> {
           let dist = clamp(Math.sqrt(x * x + y * y) * 2, 0, 1);
           audio[0].volume = Math.pow(1 - dist, 2);
         },
+        pollTime: 100;
       });
     });
 
