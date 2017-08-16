@@ -18,7 +18,7 @@ obtain(obtains, ({ swing }, { clamp })=> {
   };
 
   exports.app.start = ()=> {
-    var req = get('http://192.168.0.1/controlConfig.js').then((res)=> {
+    var req = get('http://192.168.0.1/controlConfig.js', {type: 'text'}).then((res)=> {
       console.log(res.responseText);
       var ctrlCfg = eval('//# sourceURL=remoteInstructions ()=>{ return\n' + res.responseText + '}')();
       console.log(ctrlCfg);
