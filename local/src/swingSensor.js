@@ -55,10 +55,10 @@ obtain(['./src/hx711.js', 'fs'], ({ hx711: HX711 }, fs)=> {
         var w = _this.weights();
 
         //console.log(_this.cells[0].average + ' ' + _this.cells[1].average + ' ' + _this.cells[2].average);
-        console.log(_this.totalWeight());
+        /*console.log(_this.totalWeight());
         console.log(w[0] + ' is weight 1');
         console.log(w[1] + ' is weight 2');
-        console.log(w[2] + ' is weight 3');
+        console.log(w[2] + ' is weight 3');*/
 
         return ((-.866 * w[0]) + (0.866 * w[1])) / (_this.totalWeight());
       },
