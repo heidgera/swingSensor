@@ -97,8 +97,8 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
       }
 
       //console.log(value);
-      if (Math.abs(prevRead - value) < (_this.average - _this.offset)) {
-        ave.addSample((value + prevRead) / 2);
+      if (Math.abs(prevRead - value) < (_this.average - _this.offset) / 2) {
+        ave.addSample(value );
         _this.average = ave.ave;
       }
 
