@@ -66,7 +66,9 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
       let dat = 0;
       for (var i = 24; i--;) {
         rpio.write(clkPin, rpio.HIGH);
-        dat |= ((rpio.read(dataPin) ? 1 : 0) << i);
+        var off = 0;
+        for (var j = 0; j < 4; j++) off += (rpio.read(dataPin) ? 1 : 0);
+        dat |= ((off > 2 ? 1 : 0) << i);
 
         rpio.write(clkPin, rpio.LOW);
       }
