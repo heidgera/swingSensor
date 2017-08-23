@@ -99,17 +99,16 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
         value |= ~0xffffff;
       }
 
-      if (Math.abs(prevRead - value) < (prevRead - _this.offset) / 2) {
-        ave.addSample(value);
-        _this.average = ave.ave;
-      } else {
-        console.log('Errant value is ' +value);
-        ave.addSample((value + 9 * _this.average) / 10);
-        _this.average = ave.ave;
+      if (value >= 0) {
+        if (Math.abs(prevRead - value) < (prevRead - _this.offset) / 2) {
+          ave.addSample(value);
+          _this.average = ave.ave;
+        } else {
+          console.log('Errant value is ' + value);
+          ave.addSample((value + 9 * _this.average) / 10);
+          _this.average = ave.ave;
+        }
       }
-
-      ave.addSample(value);
-      _this.average = ave.ave;
 
       prevRead = value;
 
