@@ -40,7 +40,7 @@ obtain(obtains, ({ swing }, { button: Button }, { clamp }, rpio)=> {
         },
 
         visualize: true,
-        pollTime: 200,
+        pollTime: 100,
       });
     });
 
