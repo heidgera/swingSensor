@@ -105,7 +105,7 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
           _this.average = ave.ave;
         } else {
           console.log('Errant value is ' + value);
-          ave.addSample((value + 9 * _this.average) / 10);
+          ave.addSample((value + 99 * _this.average) / 100);
           _this.average = ave.ave;
         }
       }
