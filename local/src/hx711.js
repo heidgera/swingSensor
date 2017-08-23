@@ -8,7 +8,7 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
   exports.hx711 = function(clkPin, dataPin) {
     var _this = this;
 
-    var GAIN =3;
+    var GAIN = 1;
 
     var ave = new Averager(2);
 
