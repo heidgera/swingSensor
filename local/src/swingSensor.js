@@ -12,7 +12,7 @@ obtain(['./src/hx711.js', 'fs'], ({ hx711: HX711 }, fs)=> {
     };
 
     var confDir = './sensorCalibrations.json';
-    var calib = { scaleFactors: [] };
+    var calib = { scaleFactors: [], offset: [] };
     if (fs.existsSync(confDir)) {
       let data = fs.readFileSync(confDir); //file exists, get the contents
       calib = JSON.parse(data);
