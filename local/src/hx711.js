@@ -103,14 +103,9 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
         if (Math.abs(prevRead - value) < (prevRead - _this.offset) / 2) {
           ave.addSample(value);
           _this.average = ave.ave;
-        } else {
-          console.log('Errant value is ' + value);
-          ave.addSample((value + 99 * _this.average) / 100);
-          _this.average = ave.ave;
         }
+        prevRead = value;
       }
-
-      prevRead = value;
 
       //if (tracker < ave.getBinSize()) tracker++;
       //else if (!_this.initValue) _this.initValue = _this.average;
