@@ -66,6 +66,7 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
       let dat = 0;
       for (var i = 24; i--;) {
         rpio.write(clkPin, rpio.HIGH);
+
         //var off = 0;
         //for (var j = 0; j < 10; j++) off += (rpio.read(dataPin) ? 1 : 0);
         dat |= ((rpio.read(dataPin) ? 1 : 0) << i);
@@ -98,8 +99,11 @@ obtain(['rpio', 'µ/utilities.js'], (rpio, { averager: Averager })=> {
         value |= ~0xffffff;
       }
 
-      if (Math.abs(prevRead - value) < prevRead / 2) {
+      if (Math.abs(prevRead - value) < (prevRead - _this.offset) /2) {
         ave.addSample(value);
+        _this.average = ave.ave;
+      } else {
+        ave.addSample((value + _this.average) / 2);
         _this.average = ave.ave;
       }
 
