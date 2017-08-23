@@ -1,9 +1,11 @@
 'use strict';
 
-var obtains = ['./src/swingSensor.js', 'µ/utilities.js'];
+var obtains = ['./src/swingSensor.js', './src/button.js', 'µ/utilities.js', 'rpio'];
 
-obtain(obtains, ({ swing }, { clamp })=> {
+obtain(obtains, ({ swing }, { button: Button }, { clamp }, rpio)=> {
   exports.app = {};
+
+  var calibButton = new Button(4);
 
   var setupAudioControl = (cfg)=> {
     if (cfg) {
@@ -36,12 +38,15 @@ obtain(obtains, ({ swing }, { clamp })=> {
           let dist = clamp(Math.sqrt(x * x + y * y) * 2, 0, 1);
           audio[0].volume = Math.pow(1 - dist, 2);
         },
+
         visualize: true,
         pollTime: 100,
       });
     });
 
     console.log('started');
+
+    calibButton.onPressDown = swing.calibrate;
 
     document.onkeypress = (e)=> {
       if (e.key == ' ') swing.calibrate();
@@ -53,8 +58,6 @@ obtain(obtains, ({ swing }, { clamp })=> {
     };
 
   };
-
-  //exports.app.start = ()=> {};
 
   provide(exports);
 });
