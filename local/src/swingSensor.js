@@ -24,10 +24,10 @@ obtain(['./src/hx711.js', 'fs'], ({ hx711: HX711 }, fs)=> {
           console.log('recalled scale factor of ' + calib.scaleFactors[i]);
           _this.cells[i].scale = calib.scaleFactors[i];
         } else _this.cells[i].scale = 8800.;
-        if (calib.offset[i]) {
+        /*if (calib.offset[i]) {
           console.log('recalled offset of ' + calib.offset[i]);
           _this.cells[i].offset = calib.offset[i];
-        } else _this.cells[i].tare();
+        } else*/ _this.cells[i].tare();
 
       }
     }, 1000);
@@ -39,7 +39,7 @@ obtain(['./src/hx711.js', 'fs'], ({ hx711: HX711 }, fs)=> {
         console.log('Current read is ' + _this.cells[i].average);
         console.log('Initial read was ' + _this.cells[i].initValue);
         calib.scaleFactors[i] = 3 * (newVal - _this.cells[i].initValue) / 25;
-        calib.offset[i] = _this.cells[i].initValue;
+        //calib.offset[i] = _this.cells[i].initValue;
         console.log('New scale is ' + calib.scaleFactors[i]);
         _this.cells[i].scale = calib.scaleFactors[i];
         fs.writeFileSync(confDir, JSON.stringify(calib));
