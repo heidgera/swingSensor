@@ -19,10 +19,15 @@
       }
     }
   },
-  ctrlFunc: (x, y, audio)=> {
-    var chimeSpace = (2 * Math.PI) / audio.length;
-    for (var i = 0; i < audio.length; i++) {
-      audio[i].distCompare(x,y,{x: Math.cos(chimeSpace * i)/3, y: Math.sin(chimeSpace * i)/3})
+  ctrlFunc: (swing, audio)=> {
+    if(swing.totalWeight() > 15){
+      var x = swing.point.x;
+      var y = swing.point.y;
+      var chimeSpace = (2 * Math.PI) / audio.length;
+      for (var i = 0; i < audio.length; i++) {
+        audio[i].distCompare(x,y,{x: Math.cos(chimeSpace * i)/3, y: Math.sin(chimeSpace * i)/3})
+      }
     }
+
   },
 }

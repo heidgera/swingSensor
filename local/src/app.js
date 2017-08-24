@@ -12,7 +12,7 @@ obtain(obtains, ({ swing }, { button: Button }, { clamp }, rpio)=> {
       var tracks = cfg.tracks.map(el=> new Audio(el));
       tracks.forEach(cfg.setupFunc);
       var pollInt = setInterval(()=> {
-        cfg.ctrlFunc(swing.point.x, swing.point.y, tracks);
+        cfg.ctrlFunc(swing, tracks);
         if (cfg.visualize) {
           µ('#track').style.left = (µ('#outer').offsetWidth / 2 + µ('#outer').offsetWidth * swing.point.x + 5) + 'px';
           µ('#track').style.top = (µ('#outer').offsetHeight / 2 - µ('#outer').offsetHeight * swing.point.y + 5) + 'px';
@@ -34,9 +34,13 @@ obtain(obtains, ({ swing }, { button: Button }, { clamp }, rpio)=> {
           el.play();
         },
 
-        ctrlFunc: (x, y, audio)=> {
-          let dist = clamp(Math.sqrt(x * x + y * y) * 2, 0, 1);
-          audio[0].volume = Math.pow(1 - dist, 2);
+        ctrlFunc: (swing, audio)=> {
+          if (swing.totalWeight() > 15) {
+            var x = swing.point.x;
+            var y = swing.point.y;
+            let dist = clamp(Math.sqrt(x * x + y * y) * 2, 0, 1);
+            audio[0].volume = Math.pow(1 - dist, 2);
+          } else audio[0].volume = 0;
         },
 
         visualize: true,
@@ -49,7 +53,7 @@ obtain(obtains, ({ swing }, { button: Button }, { clamp }, rpio)=> {
     var pollInt = setInterval(()=> {
       console.log(swing.point.x + ' ' + swing.point.y);
       var w = swing.weights();
-      console.log('Weights are '+ w[0] + ' '+ w[1] + ' '+ w[2]);
+      console.log('Weights are ' + w[0] + ' ' + w[1] + ' ' + w[2]);
     }, 1000);
 
     calibButton.onPressDown = swing.calibrate;
