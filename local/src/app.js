@@ -46,6 +46,12 @@ obtain(obtains, ({ swing }, { button: Button }, { clamp }, rpio)=> {
 
     console.log('started');
 
+    var pollInt = setInterval(()=> {
+      console.log(swing.point.x + ' ' + swing.point.y);
+      var w = swing.weights();
+      console.log('Weights are '+ w[0] + ' '+ w[1] + ' '+ w[2]);
+    }, 1000);
+
     calibButton.onPressDown = swing.calibrate;
 
     document.onkeypress = (e)=> {
